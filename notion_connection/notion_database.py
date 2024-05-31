@@ -1,7 +1,7 @@
 import requests
 import json
 
-from notion_access_info import DatabaseAccessInfo
+from .notion_access_info import DatabaseAccessInfo
 
 class NotionDatabase:
 

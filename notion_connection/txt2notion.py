@@ -1,6 +1,6 @@
-from notion_database import NotionDatabase
-from notion_access_info import DatabaseAccessInfo
-from txt_loader import TxtLoader
+from .notion_database import NotionDatabase
+from .notion_access_info import DatabaseAccessInfo
+from .txt_loader import TxtLoader
 import time
 
 

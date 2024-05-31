@@ -1,8 +1,12 @@
-from notion_access_info import DatabaseAccessInfo
-from txt_loader import TxtLoader
-from notion_database import NotionDatabase
-from txt2notion import Txt2Notion
+# from notion_access_info import DatabaseAccessInfo
+# from txt_loader import TxtLoader
+# from notion_database import NotionDatabase
+# from txt2notion import Txt2Notion
 
+from notion_connection.notion_database import NotionDatabase
+from notion_connection.notion_access_info import DatabaseAccessInfo
+from notion_connection.txt_loader import TxtLoader
+from notion_connection.txt2notion import Txt2Notion
 
 if __name__ == '__main__':
     access_info = DatabaseAccessInfo()
