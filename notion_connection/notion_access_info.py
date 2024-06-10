@@ -3,6 +3,9 @@ import os
 
 load_dotenv()
 
+
+get_key = lambda x: os.getenv(x)
+
 class AccessInfo:
     def __init__(self, secret_key, access_id):
         self.secret_key = secret_key
@@ -45,5 +48,7 @@ class DatabaseAccessHeaders(AccessHeaders):
 
 if __name__ == '__main__':
     access_info = DatabaseAccessInfo()
-    access_info.set_access_info_from_dotenv("secret_key", "database_id_inspiration")
+    access_info.set_access_info_from_dotenv("SECRET_KEY", "database_id_inspiration")
     access_info.print_access_info()
+
+    print(get_key("SECRET_KEY"))

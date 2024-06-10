@@ -3,3 +3,4 @@ input.txt
 output.txt
 .env
 .venv
+__pycache__/
