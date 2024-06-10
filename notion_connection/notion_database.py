@@ -1,19 +1,21 @@
 import requests
 import json
 
-from .notion_access_info import DatabaseAccessInfo
+from notion_access_info import DatabaseAccessInfo, PageAccessInfo
+from notion_page import NotionPage
 
 class NotionDatabase:
 
     def __init__(self, access_info: DatabaseAccessInfo):
-        self.secret_key = access_info.get_key()
-        self.database_id = access_info.get_access_id()
-        self.base_url = 'https://api.notion.com/v1'
+        self._secret_key = access_info.get_key()
+        self._database_id = access_info.get_access_id()
+        self._base_url = 'https://api.notion.com/v1'
+        self.pages = self._get_all_pages()
 
     def test_connection(self):
-        url = f'{self.base_url}/databases/{self.database_id}'
+        url = f'{self._base_url}/databases/{self._database_id}'
         headers = {
-            'Authorization': f'Bearer {self.secret_key}',
+            'Authorization': f'Bearer {self._secret_key}',
             'Content-Type': 'application/json',
             'Notion-Version': '2022-06-28',
         }
@@ -24,9 +26,9 @@ class NotionDatabase:
             print(f"Failed to connect to database. Status code: {response.status_code}")
 
     def get_database_info(self):
-        url = f'{self.base_url}/databases/{self.database_id}'
+        url = f'{self._base_url}/databases/{self._database_id}'
         headers = {
-            'Authorization': f'Bearer {self.secret_key}',
+            'Authorization': f'Bearer {self._secret_key}',
             'Content-Type': 'application/json',
             'Notion-Version': '2022-06-28',
         }
@@ -46,17 +48,45 @@ class NotionDatabase:
             return plain_texts
         else:
             return None
+        
+    def _get_all_pages(self):
+        url = f'{self._base_url}/databases/{self._database_id}/query'
+        headers = {
+            'Authorization': f'Bearer {self._secret_key}',
+            'Content-Type': 'application/json',
+            'Notion-Version': '2022-06-28',
+        }
+
+        response = requests.post(url, headers=headers)
+        if response.status_code == 200:
+            data = response.json()
+            if data['results']:
+                notion_pages = []
+                for page in data['results']:
+                    page_id = page['id']
+                    # print(f"Page ID: {page_id}")
+                    access_info = PageAccessInfo(self._secret_key, page_id)
+                    notion_page = NotionPage(access_info)
+                    # print(notion_page.get_page_name())
+                    notion_pages.append(notion_page)
+                return notion_pages
+            else:
+                print("Database is empty.")
+                return []
+        else:
+            print(f"Failed to query database. Status code: {response.status_code}")
+            return []
 
     def add_page(self, properties):
-        url = f'{self.base_url}/pages'
+        url = f'{self._base_url}/pages'
         headers = {
-            'Authorization': f'Bearer {self.secret_key}',
+            'Authorization': f'Bearer {self._secret_key}',
             'Content-Type': 'application/json',
             'Notion-Version': '2022-06-28',
         }
         payload = {
             "parent": {
-                "database_id": self.database_id
+                "database_id": self._database_id
             },
             "properties": properties
         }
@@ -68,9 +98,9 @@ class NotionDatabase:
 
 
     def update_latest_page_property(self, new_properties):
-        url = f'{self.base_url}/databases/{self.database_id}/query'
+        url = f'{self._base_url}/databases/{self._database_id}/query'
         headers = {
-            'Authorization': f'Bearer {self.secret_key}',
+            'Authorization': f'Bearer {self._secret_key}',
             'Content-Type': 'application/json',
             'Notion-Version': '2022-06-28',
         }
@@ -81,7 +111,7 @@ class NotionDatabase:
             data = response.json()
             if data['results']:
                 latest_page_id = data['results'][0]['id']  # 获取最近一个页面的 ID
-                update_url = f'{self.base_url}/pages/{latest_page_id}'
+                update_url = f'{self._base_url}/pages/{latest_page_id}'
                 payload = {
                     "properties": new_properties
                 }
@@ -96,9 +126,9 @@ class NotionDatabase:
             print(f"Failed to query database. Status code: {response.status_code}")
 
     def update_latest_pages_properties(self, new_properties, num=30):
-        url = f'{self.base_url}/databases/{self.database_id}/query'
+        url = f'{self._base_url}/databases/{self._database_id}/query'
         headers = {
-            'Authorization': f'Bearer {self.secret_key}',
+            'Authorization': f'Bearer {self._secret_key}',
             'Content-Type': 'application/json',
             'Notion-Version': '2022-06-28',
         }
@@ -110,7 +140,7 @@ class NotionDatabase:
             if data['results']:
                 latest_page_ids = [page['id'] for page in data['results'][:num]]  # 获取最近 num 个页面的 ID
                 for page_id in latest_page_ids:
-                    update_url = f'{self.base_url}/pages/{page_id}'
+                    update_url = f'{self._base_url}/pages/{page_id}'
                     payload = {
                         "properties": new_properties
                     }
@@ -156,5 +186,6 @@ if __name__ == '__main__':
     # 添加页面
     notion_db.add_page(page_properties)
 
-
-
+    # 获取所有页面 打印页面名称
+    for page in notion_db.pages:
+        print(page.get_page_name())
