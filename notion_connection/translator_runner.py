@@ -9,7 +9,7 @@ class TranslatorRunner:
 
     def translate_page_titles(self, target_language='en'):
         for page in self.notion_database.pages:
-            current_title = page.get_page_name()
+            current_title = page.page_name
             translated_title = translate_text(current_title, target=target_language)
             print(f"Current title of page '{current_title}': {translated_title}")
             if translated_title != current_title:

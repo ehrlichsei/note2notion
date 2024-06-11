@@ -46,14 +46,17 @@ class Txt2Notion:
     
 
 if __name__ == '__main__':
+
+
     access_info = DatabaseAccessInfo()
-    access_info.set_access_info_from_dotenv("SECRET_KEY", "DATABASE_ID_TEST")
-    filepath = "demo.txt"
+    access_info.set_access_info_from_dotenv("SECRET_KEY", "DATABASE_ID_PACKINGUP_LIST")
+    filepath = "input.txt"
 
     text_loader = TxtLoader(filepath)
     text_loader.process_lines()
 
     notion_database = NotionDatabase(access_info)
+    notion_database.test_connection()
 
     txt2notion = Txt2Notion(notion_database, text_loader)
 

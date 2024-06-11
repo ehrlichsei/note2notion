@@ -23,7 +23,7 @@ if __name__ == '__main__':
     access_info.set_access_info_from_dotenv('SECRET_KEY', 'PAGE_ID_TEST')
     page = NotionPage(access_info)
     page.test_connection()
-    print(page._get_page_name())
+    print(page.page_name)
 
     properties = {
         "Name": {

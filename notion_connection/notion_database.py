@@ -188,4 +188,4 @@ if __name__ == '__main__':
 
     # 获取所有页面 打印页面名称
     for page in notion_db.pages:
-        print(page.get_page_name())
+        print(page.page_name)
