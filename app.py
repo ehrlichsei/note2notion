@@ -1,4 +1,7 @@
 from flask import Flask, jsonify, request
+from werkzeug.utils import secure_filename
+import os
+
 from notion_connection.txt2notion import Txt2Notion
 from notion_connection.notion_database import NotionDatabase
 from notion_connection.notion_access_info import DatabaseAccessInfo
@@ -18,6 +21,15 @@ notion_database.test_connection()
 
 txt2notion = Txt2Notion(notion_database, text_loader)
 print("intialized txt2notion")
+
+# 上传文件存储目录
+UPLOAD_FOLDER = 'uploads'
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+ALLOWED_EXTENSIONS = {'txt'}
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/api/write2notion', methods=['GET'])
 def write2notion():
@@ -64,6 +76,39 @@ def submit_json():
             'email': email
         }
         return jsonify(response)
+    
+@app.route('/api/upload', methods=['POST'])
+def upload_file():
+    # 检查请求是否包含文件
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file part in the request'}), 400
+
+    file = request.files['file']
+
+    # 如果用户未选择文件，浏览器也会发送一个空的文件部分
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'}), 400
+
+    # 检查文件扩展名
+    if file and allowed_file(file.filename):
+        # 将文件保存到指定路径
+        filename = secure_filename(file.filename)
+        file_path = os.path.join(UPLOAD_FOLDER, filename)
+        file.save(file_path)
+        
+        # 对上传的文件进行处理，比如读取内容并返回
+        with open(file_path, 'r', encoding='utf-8') as f:
+            file_content = f.read()
+
+        # 解码成中文文本
+        file_content_decoded = file_content.encode('utf-8').decode('unicode-escape')
+        
+        # 返回上传成功的信息及文件内容（示例）
+        return jsonify({'message': 'File uploaded successfully', 'file_content': file_content_decoded}), 200
+
+    else:
+        return jsonify({'error': 'Invalid file type'}), 400
+
 
 if __name__ == '__main__':
     app.run(debug=True)  # 启动 Flask 应用的调试模式
