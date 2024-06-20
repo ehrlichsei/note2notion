@@ -13,7 +13,7 @@ CORS(app)
 
 access_info = DatabaseAccessInfo()
 access_info.set_access_info_from_dotenv("SECRET_KEY", "DATABASE_ID_TEST")
-filepath = "demo.txt"
+filepath = "deploy_test.txt"
 
 text_loader = TxtLoader(filepath)
 text_loader.process_lines()
