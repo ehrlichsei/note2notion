@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 from werkzeug.utils import secure_filename
 import os
 
@@ -8,6 +9,7 @@ from notion_connection.notion_access_info import DatabaseAccessInfo
 from notion_connection.txt_loader import TxtLoader
 
 app = Flask(__name__)
+CORS(app)
 
 access_info = DatabaseAccessInfo()
 access_info.set_access_info_from_dotenv("SECRET_KEY", "DATABASE_ID_TEST")
