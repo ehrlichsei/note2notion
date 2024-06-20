@@ -4,3 +4,5 @@ output.txt
 .env
 .venv
 __pycache__/
+/node_modules
+/views/node_modules
