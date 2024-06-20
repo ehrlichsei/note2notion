@@ -1,45 +1,34 @@
-from flask import Flask, redirect, url_for, session, request
-from requests_oauthlib import OAuth2Session
-import os
+from flask import Flask, jsonify, request
+from notion_connection.txt2notion import Txt2Notion
+from notion_connection.notion_database import NotionDatabase
+from notion_connection.notion_access_info import DatabaseAccessInfo
+from notion_connection.txt_loader import TxtLoader
 
 app = Flask(__name__)
-app.secret_key = os.urandom(24)
 
-# OAuth 2.0 Client Information
-client_id = 'YOUR_CLIENT_ID'
-client_secret = 'YOUR_CLIENT_SECRET'
-authorization_base_url = 'https://accounts.google.com/o/oauth2/auth'
-token_url = 'https://accounts.google.com/o/oauth2/token'
-scope = ['openid', 'email', 'profile']
-redirect_uri = 'http://localhost:5000/callback'
+access_info = DatabaseAccessInfo()
+access_info.set_access_info_from_dotenv("SECRET_KEY", "DATABASE_ID_TEST")
+filepath = "demo.txt"
 
-# Step 1: User Authorization.
-@app.route('/login')
-def login():
-    google = OAuth2Session(client_id, scope=scope, redirect_uri=redirect_uri)
-    authorization_url, state = google.authorization_url(authorization_base_url, access_type="offline", prompt="select_account")
-    
-    # State is used to prevent CSRF, keep this for later.
-    session['oauth_state'] = state
-    return redirect(authorization_url)
+text_loader = TxtLoader(filepath)
+text_loader.process_lines()
 
-# Step 2: User authorized the client, get the token.
-@app.route('/callback')
-def callback():
-    google = OAuth2Session(client_id, state=session['oauth_state'], redirect_uri=redirect_uri)
-    token = google.fetch_token(token_url, client_secret=client_secret, authorization_response=request.url)
-    
-    # Save the token in session for later use.
-    session['oauth_token'] = token
-    
-    return redirect(url_for('.profile'))
+notion_database = NotionDatabase(access_info)
+notion_database.test_connection()
 
-@app.route('/profile')
-def profile():
-    google = OAuth2Session(client_id, token=session['oauth_token'])
-    response = google.get('https://www.googleapis.com/oauth2/v1/userinfo')
-    
-    return response.json()
+txt2notion = Txt2Notion(notion_database, text_loader)
+print("intialized txt2notion")
+
+@app.route('/api/write2notion', methods=['GET'])
+def write2notion():
+    print("writing to notion")
+    txt2notion.write_to_notion(start_line=0, frequency=50)
+    print("wrote to notion")
+    return jsonify({'message': 'Writing to notion successful'})
+
+@app.route('/api/test', methods=['GET'])
+def test():
+    return jsonify({'message': 'hello world'})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True)  # 启动 Flask 应用的调试模式
