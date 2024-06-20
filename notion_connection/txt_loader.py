@@ -1,7 +1,9 @@
+import os
+
 class TxtLoader:
 
     def __init__(self, file_path):
-        self.file_path = file_path
+        self.file_path = os.path.join(os.path.dirname(__file__), file_path)
         self.lines = self.load_txt_file()
 
     def load_txt_file(self):

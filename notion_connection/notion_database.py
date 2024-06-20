@@ -1,8 +1,8 @@
 import requests
 import json
 
-from notion_access_info import DatabaseAccessInfo, PageAccessInfo
-from notion_page import NotionPage
+from .notion_access_info import DatabaseAccessInfo, PageAccessInfo
+from .notion_page import NotionPage
 
 class NotionDatabase:
 

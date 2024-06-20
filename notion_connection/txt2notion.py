@@ -1,6 +1,6 @@
-from notion_database import NotionDatabase
-from notion_access_info import DatabaseAccessInfo
-from txt_loader import TxtLoader
+from .notion_database import NotionDatabase
+from .notion_access_info import DatabaseAccessInfo
+from .txt_loader import TxtLoader
 import time
 
 
@@ -49,8 +49,8 @@ if __name__ == '__main__':
 
 
     access_info = DatabaseAccessInfo()
-    access_info.set_access_info_from_dotenv("SECRET_KEY", "DATABASE_ID_PACKINGUP_LIST")
-    filepath = "input.txt"
+    access_info.set_access_info_from_dotenv("SECRET_KEY", "DATABASE_ID_TEST")
+    filepath = "notion_connection/input.txt"
 
     text_loader = TxtLoader(filepath)
     text_loader.process_lines()

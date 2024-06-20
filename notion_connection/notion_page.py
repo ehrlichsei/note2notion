@@ -1,4 +1,4 @@
-from notion_access_info import PageAccessInfo
+from .notion_access_info import PageAccessInfo
 import requests
 import json
 
