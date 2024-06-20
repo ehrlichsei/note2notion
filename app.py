@@ -30,5 +30,40 @@ def write2notion():
 def test():
     return jsonify({'message': 'hello world'})
 
+@app.route('/api/submit', methods=['POST'])
+def submit_url():
+    if request.method == 'POST':
+        # 获取 POST 请求中的数据
+        name = request.args.get('name')
+        email = request.args.get('email')
+        print(name, email)
+
+        # 做一些处理逻辑，比如存储到数据库或者进行其他操作
+        # 这里简单返回一个响应
+        response = {
+            'message': 'Received data',
+            'name': name,
+            'email': email
+        }
+        return jsonify(response)
+    
+@app.route('/api/submit_json', methods=['POST'])
+def submit_json():
+    if request.method == 'POST':
+        # 获取 POST 请求中的 JSON 数据
+        data = request.json
+        name = data.get('name')
+        email = data.get('email')
+        print(name, email)
+
+        # 做一些处理逻辑，比如存储到数据库或者进行其他操作
+        # 这里简单返回一个响应
+        response = {
+            'message': 'Received data',
+            'name': name,
+            'email': email
+        }
+        return jsonify(response)
+
 if __name__ == '__main__':
     app.run(debug=True)  # 启动 Flask 应用的调试模式
