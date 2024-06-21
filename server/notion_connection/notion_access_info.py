@@ -15,7 +15,16 @@ class AccessInfo:
         self.secret_key = os.getenv(secret_key_key)
         self.access_id = os.getenv(access_id_key)
 
-    
+    def set_access_info_from_globalenv(self, secret_key_key, access_id_key):
+        self.secret_key = os.environ.get(secret_key_key)
+        self.access_id = os.environ.get(access_id_key)
+
+    def set_access(self, secret_key, access_id):
+        if os.getenv('SECRET_KEY'):
+            self.set_access_info_from_dotenv(secret_key, access_id)
+        else:
+            self.set_access_info_from_globalenv(secret_key, access_id)
+
     def get_key(self):
         return self.secret_key
     

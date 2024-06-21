@@ -12,8 +12,9 @@ app = Flask(__name__)
 CORS(app)
 
 access_info = DatabaseAccessInfo()
-access_info.set_access_info_from_dotenv("SECRET_KEY", "DATABASE_ID_TEST")
+access_info.set_access("SECRET_KEY", "DATABASE_ID_TEST")
 filepath = "deploy_test.txt"
+access_info.print_access_info()
 
 text_loader = TxtLoader(filepath)
 text_loader.process_lines()
