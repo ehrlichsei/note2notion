@@ -11,6 +11,9 @@ from notion_connection.txt_loader import TxtLoader
 app = Flask(__name__)
 CORS(app)
 
+@app.route("/")
+def index():
+    return "This is yet another version!"
 
 
 @app.route('/api/test', methods=['GET'])
