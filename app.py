@@ -3,10 +3,10 @@ from flask_cors import CORS
 from werkzeug.utils import secure_filename
 import os
 
-from notion_connection.txt2notion import Txt2Notion
-from notion_connection.notion_database import NotionDatabase
-from notion_connection.notion_access_info import DatabaseAccessInfo
-from notion_connection.txt_loader import TxtLoader
+from server.notion_connection.txt2notion import Txt2Notion
+from server.notion_connection.notion_database import NotionDatabase
+from server.notion_connection.notion_access_info import DatabaseAccessInfo
+from server.notion_connection.txt_loader import TxtLoader
 
 app = Flask(__name__)
 CORS(app)
