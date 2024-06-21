@@ -21,4 +21,5 @@ def test():
     return jsonify({'message': 'hello world'})
 
 if __name__ == '__main__':
-    app.run(debug=True)  # 启动 Flask 应用的调试模式
+    port = int(os.environ.get('PORT', 5001))
+    app.run(host='0.0.0.0', port=port, debug=True)
