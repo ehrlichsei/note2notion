@@ -7,15 +7,14 @@ from .notion_page import NotionPage
 class NotionDatabase:
 
     def __init__(self, access_info: DatabaseAccessInfo):
-        self._secret_key = access_info.get_key()
-        self._database_id = access_info.get_access_id()
+        self.access_info = access_info
         self._base_url = 'https://api.notion.com/v1'
         self.pages = self._get_all_pages()
 
     def test_connection(self):
-        url = f'{self._base_url}/databases/{self._database_id}'
+        url = f'{self._base_url}/databases/{self.access_info.get_access_id()}'
         headers = {
-            'Authorization': f'Bearer {self._secret_key}',
+            'Authorization': f'Bearer {self.access_info.get_key()}',
             'Content-Type': 'application/json',
             'Notion-Version': '2022-06-28',
         }
@@ -29,9 +28,9 @@ class NotionDatabase:
 
 
     def get_database_info(self):
-        url = f'{self._base_url}/databases/{self._database_id}'
+        url = f'{self._base_url}/databases/{self.access_info.get_access_id()}'
         headers = {
-            'Authorization': f'Bearer {self._secret_key}',
+            'Authorization': f'Bearer {self.access_info.get_key()}',
             'Content-Type': 'application/json',
             'Notion-Version': '2022-06-28',
         }
@@ -53,9 +52,9 @@ class NotionDatabase:
             return None
         
     def _get_all_pages(self):
-        url = f'{self._base_url}/databases/{self._database_id}/query'
+        url = f'{self._base_url}/databases/{self.access_info.get_access_id()}/query'
         headers = {
-            'Authorization': f'Bearer {self._secret_key}',
+            'Authorization': f'Bearer {self.access_info.get_key()}',
             'Content-Type': 'application/json',
             'Notion-Version': '2022-06-28',
         }
@@ -68,7 +67,7 @@ class NotionDatabase:
                 for page in data['results']:
                     page_id = page['id']
                     # print(f"Page ID: {page_id}")
-                    access_info = PageAccessInfo(self._secret_key, page_id)
+                    access_info = PageAccessInfo(self.access_info.get_key(), page_id)
                     notion_page = NotionPage(access_info)
                     # print(notion_page.get_page_name())
                     notion_pages.append(notion_page)
@@ -81,9 +80,9 @@ class NotionDatabase:
             return []
     
     def get_all_page_ids(self):
-        url = f'{self._base_url}/databases/{self._database_id}/query'
+        url = f'{self._base_url}/databases/{self.access_info.get_access_id()}/query'
         headers = {
-            'Authorization': f'Bearer {self._secret_key}',
+            'Authorization': f'Bearer {self.access_info.get_key()}',
             'Content-Type': 'application/json',
             'Notion-Version': '2022-06-28',
         }
@@ -108,13 +107,13 @@ class NotionDatabase:
     def add_page(self, properties):
         url = f'{self._base_url}/pages'
         headers = {
-            'Authorization': f'Bearer {self._secret_key}',
+            'Authorization': f'Bearer {self.access_info.get_key()}',
             'Content-Type': 'application/json',
             'Notion-Version': '2022-06-28',
         }
         payload = {
             "parent": {
-                "database_id": self._database_id
+                "database_id": self.access_info.get_access_id()
             },
             "properties": properties
         }
@@ -126,9 +125,9 @@ class NotionDatabase:
 
 
     def update_latest_page_property(self, new_properties):
-        url = f'{self._base_url}/databases/{self._database_id}/query'
+        url = f'{self._base_url}/databases/{self.access_info.get_access_id()}/query'
         headers = {
-            'Authorization': f'Bearer {self._secret_key}',
+            'Authorization': f'Bearer {self.access_info.get_key()}',
             'Content-Type': 'application/json',
             'Notion-Version': '2022-06-28',
         }
@@ -154,9 +153,9 @@ class NotionDatabase:
             print(f"Failed to query database. Status code: {response.status_code}")
 
     def update_latest_pages_properties(self, new_properties, num=30):
-        url = f'{self._base_url}/databases/{self._database_id}/query'
+        url = f'{self._base_url}/databases/{self.access_info.get_access_id()}/query'
         headers = {
-            'Authorization': f'Bearer {self._secret_key}',
+            'Authorization': f'Bearer {self.access_info.get_key()}',
             'Content-Type': 'application/json',
             'Notion-Version': '2022-06-28',
         }
