@@ -16,8 +16,13 @@ source .venv/bin/activate
 pip3 install -r requirements.txt
 ```
 
-### run testcases
+### run unit testcases
 ```
-python3 -m unittest discover -s server/notion_connection/tests -p "test_*.py"
+python3 -m unittest discover -s server/notion_connection/tests/unit -p "test_*.py"
 
+```
+
+or run only API connection test
+```
+python3 -m unittest discover -s server/notion_connection/tests/integration -p "test_notion_api_connection.py"
 ```

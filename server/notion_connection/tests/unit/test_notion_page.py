@@ -47,9 +47,6 @@ class TestNotionPage(unittest.TestCase):
             result = self.page.get_page_name()
             self.assertEqual(result, expected_page_name)
     
-    def test_test_api_connected(self):
-        result = self.page.test_connection()
-        self.assertTrue(result)
 
     def test_update_page_connected(self):
         new_page_name = 'lalalala'

@@ -20,10 +20,13 @@ class NotionDatabase:
             'Notion-Version': '2022-06-28',
         }
         response = requests.get(url, headers=headers)
+        is_connected = response.status_code == 200
         if response.status_code == 200:
             print("Connection to database successful.")
         else:
             print(f"Failed to connect to database. Status code: {response.status_code}")
+        return is_connected
+
 
     def get_database_info(self):
         url = f'{self._base_url}/databases/{self._database_id}'
@@ -70,6 +73,31 @@ class NotionDatabase:
                     # print(notion_page.get_page_name())
                     notion_pages.append(notion_page)
                 return notion_pages
+            else:
+                print("Database is empty.")
+                return []
+        else:
+            print(f"Failed to query database. Status code: {response.status_code}")
+            return []
+    
+    def get_all_page_ids(self):
+        url = f'{self._base_url}/databases/{self._database_id}/query'
+        headers = {
+            'Authorization': f'Bearer {self._secret_key}',
+            'Content-Type': 'application/json',
+            'Notion-Version': '2022-06-28',
+        }
+
+        response = requests.post(url, headers=headers)
+        if response.status_code == 200:
+            data = response.json()
+            if data['results']:
+                page_ids = []
+                for page in data['results']:
+                    id = page['id']
+                    # print(f"Page ID: {page_id}")
+                    page_ids.append(id)
+                return page_ids
             else:
                 print("Database is empty.")
                 return []

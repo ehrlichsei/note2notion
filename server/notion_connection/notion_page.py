@@ -19,6 +19,10 @@ class NotionPage:
         }
         response = requests.get(url, headers=headers)
         is_connected = response.status_code == 200
+        if is_connected:
+            print("Connection to page successful.")
+        else:
+            print(f"Failed to connect to page. Status code: {response.status_code}")
         return is_connected
 
     def get_page_info(self):
