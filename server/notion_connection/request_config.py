@@ -42,6 +42,13 @@ class DatabaseRequestFormat(RequestFormat):
     def __init__(self, database_access_info: DatabaseAccessInfo):
         super().__init__(database_access_info, RequestType.DATABASE)
 
+class DatabaseQueryFormat(RequestFormat):
+    def __init__(self, database_access_info: DatabaseAccessInfo):
+        super().__init__(database_access_info, RequestType.DATABASE)
+
+    def set_request_url(self):
+        self._requet_url = f'{self._base_url}/{self._type.value}/{self.access_info.get_access_id()}/query'
+
 
 class PageRequestFormat(RequestFormat):
     def __init__(self, page_access_info: PageAccessInfo):
