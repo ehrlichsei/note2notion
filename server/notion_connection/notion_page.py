@@ -8,7 +8,7 @@ class NotionPage:
         self._secret_key = access_info.get_key()
         self._page_id = access_info.get_access_id()
         self._base_url = 'https://api.notion.com/v1'
-        self.page_name = self._get_page_name()
+        self.page_name = self.get_page_name()
 
     def test_connection(self):
         url = f'{self._base_url}/pages/{self._page_id}'
@@ -18,10 +18,8 @@ class NotionPage:
             'Notion-Version': '2022-06-28',
         }
         response = requests.get(url, headers=headers)
-        if response.status_code == 200:
-            print("Connection to page successful.")
-        else:
-            print(f"Failed to connect to page. Status code: {response.status_code}")
+        is_connected = response.status_code == 200
+        return is_connected
 
     def get_page_info(self):
         url = f'{self._base_url}/pages/{self._page_id}'
@@ -39,7 +37,7 @@ class NotionPage:
             print(f"Failed to get page info. Status code: {response.status_code}")
             return None
         
-    def _get_page_name(self):
+    def get_page_name(self):
         page_info = self.get_page_info()
         if page_info:
             properties = page_info.get('properties', {})
@@ -61,10 +59,8 @@ class NotionPage:
             "properties": properties
         }
         response = requests.patch(url, headers=headers, data=json.dumps(payload))
-        if response.status_code == 200:
-            print("Page updated successfully.")
-        else:
-            print(f"Failed to update page. Status code: {response.status_code}")
+        is_updated = response.status_code == 200
+        return is_updated
 
 
     def update_title(self, title):
@@ -89,7 +85,7 @@ if __name__ == '__main__':
     access_info.set_access_info_from_dotenv('SECRET_KEY', 'PAGE_ID_TEST')
     page = NotionPage(access_info)
     page.test_connection()
-    print(page._get_page_name())
+    print(page.get_page_name())
 
     properties = {
         "Name": {
