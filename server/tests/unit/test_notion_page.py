@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch, MagicMock
-from server.notion_connection.notion_access_info import PageAccessInfo  # 假设你的 PageAccessInfo 类来自同一个模块
-from server.notion_connection.notion_page import NotionPage  # 假设你的 NotionPage 类来自同一个模块
+from notion_connection.notion_access_info import PageAccessInfo  # 假设你的 PageAccessInfo 类来自同一个模块
+from notion_connection.notion_page import NotionPage  # 假设你的 NotionPage 类来自同一个模块
 
 class TestNotionPage(unittest.TestCase):
     

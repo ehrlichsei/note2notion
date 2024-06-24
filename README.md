@@ -18,11 +18,11 @@ pip3 install -r requirements.txt
 
 ### run unit testcases
 ```
-python3 -m unittest discover -s server/notion_connection/tests/unit -p "test_*.py"
+python3 -m unittest discover -s tests/unit -p "test_*.py"
 
 ```
 
 or run only API connection test
 ```
-python3 -m unittest discover -s server/notion_connection/tests/integration -p "test_notion_api_connection.py"
+python3 -m unittest discover -s tests/integration -p "test_notion_api_connection.py"
 ```

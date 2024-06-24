@@ -8,7 +8,7 @@ from notion_connection.txt_manager import TxtManager
 if __name__ == '__main__':
     print ("main path: ",os.getcwd())
     access_info = DatabaseAccessInfo()
-    access_info.set_access_info_from_dotenv("SECRET_KEY", "DATABASE_ID_TEST")
+    access_info.set_access_info_from_dotenv("SECRET_KEY", "DATABASE_ID_INSPIRATION")
     filepath = "data/input.txt"
 
     text_manager = TxtManager(filepath)

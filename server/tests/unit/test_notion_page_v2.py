@@ -1,12 +1,12 @@
 import unittest
 from unittest.mock import patch, Mock
-from server.notion_connection.notion_base import NotionPageV2
-from server.notion_connection.notion_access_info import PageAccessInfo
-from server.notion_connection.request_config import PageRequestFormat
+from notion_connection.notion_base import NotionPageV2
+from notion_connection.notion_access_info import PageAccessInfo
+from notion_connection.request_config import PageRequestFormat
 
 class TestNotionPageV2(unittest.TestCase):
 
-    @patch('server.notion_connection.notion_base.requests.get')
+    @patch('notion_connection.notion_base.requests.get')
     def test_get_item_name(self, mock_get):
         # 设置模拟返回值
         mock_response = Mock()

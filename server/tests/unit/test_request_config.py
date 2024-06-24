@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import MagicMock
-from server.notion_connection.request_config import RequestFormat, DatabaseRequestFormat, PageRequestFormat, RequestType, AccessInfo, DatabaseAccessInfo, PageAccessInfo
+from notion_connection.request_config import RequestFormat, DatabaseRequestFormat, PageRequestFormat, RequestType, AccessInfo, DatabaseAccessInfo, PageAccessInfo
 
 class TestRequestFormat(unittest.TestCase):
     def setUp(self):
