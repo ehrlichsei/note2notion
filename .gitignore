@@ -2,6 +2,8 @@ demo.txt
 input.txt
 output.txt
 .env
+server/.env
+server/data
 .venv
 __pycache__/
 /node_modules
