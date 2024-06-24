@@ -3,6 +3,7 @@ from .notion_access_info import DatabaseAccessInfo
 from .txt_loader import TxtLoader
 import time
 import os
+import logging
 
 
 
@@ -34,7 +35,7 @@ class Txt2Notion:
         for index, line in enumerate(lines):
             if index < start_line:
                 continue  # 跳过指定行之前的行
-            print(f"Processing line {index}: {line}")
+            logging.info(f"Processing line {index}: {line}")
             title = line
             property = self.txt2property(title)
             self.notion_database.add_page(property)

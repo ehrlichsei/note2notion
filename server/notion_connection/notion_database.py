@@ -1,5 +1,6 @@
 import requests
 import json
+import logging
 
 from .notion_access_info import DatabaseAccessInfo, PageAccessInfo
 from .notion_page import NotionPage
@@ -9,7 +10,7 @@ class NotionDatabase:
     def __init__(self, access_info: DatabaseAccessInfo):
         self.access_info = access_info
         self._base_url = 'https://api.notion.com/v1'
-        self.pages = self._get_all_pages()
+        # self.pages = self._get_all_pages()
 
     def test_connection(self):
         url = f'{self._base_url}/databases/{self.access_info.get_access_id()}'
@@ -21,8 +22,9 @@ class NotionDatabase:
         response = requests.get(url, headers=headers)
         is_connected = response.status_code == 200
         if response.status_code == 200:
-            print("Connection to database successful.")
+            logging.info("Connection to database successful.")
         else:
+            logging.error(f"Failed to connect to database. Status code: {response.status_code}")
             print(f"Failed to connect to database. Status code: {response.status_code}")
         return is_connected
 
@@ -39,7 +41,7 @@ class NotionDatabase:
             database_info = response.json()
             return database_info
         else:
-            print(f"Failed to get database info. Status code: {response.status_code}")
+            logging.error(f"Failed to get database info. Status code: {response.status_code}")
             return None
         
     def get_database_name(self):
@@ -73,10 +75,10 @@ class NotionDatabase:
                     notion_pages.append(notion_page)
                 return notion_pages
             else:
-                print("Database is empty.")
+                logging.warning("Database is empty.")
                 return []
         else:
-            print(f"Failed to query database. Status code: {response.status_code}")
+            logging.error(f"Failed to query database. Status code: {response.status_code}")
             return []
     
     def get_all_page_ids(self):
@@ -98,10 +100,10 @@ class NotionDatabase:
                     page_ids.append(id)
                 return page_ids
             else:
-                print("Database is empty.")
+                logging.warning("Database is empty.")
                 return []
         else:
-            print(f"Failed to query database. Status code: {response.status_code}")
+            logging.error(f"Failed to query database. Status code: {response.status_code}")
             return []
 
     def add_page(self, properties):
@@ -119,9 +121,9 @@ class NotionDatabase:
         }
         response = requests.post(url, headers=headers, data=json.dumps(payload))
         if response.status_code == 200:
-            print("Page added successfully.")
+            logging.info("Page added successfully.")
         else:
-            print(f"Failed to add page. Status code: {response.status_code}")
+            logging.error(f"Failed to add page. Status code: {response.status_code}")
 
 
     def update_latest_page_property(self, new_properties):
@@ -144,13 +146,13 @@ class NotionDatabase:
                 }
                 update_response = requests.patch(update_url, headers=headers, data=json.dumps(payload))
                 if update_response.status_code == 200:
-                    print(f"Latest page {latest_page_id} property updated successfully.")
+                    logging.info(f"Latest page {latest_page_id} property updated successfully.")
                 else:
-                    print(f"Failed to update latest page property. Status code: {update_response.status_code}")
+                    logging.error(f"Failed to update latest page property. Status code: {update_response.status_code}")
             else:
-                print("Database is empty. No page to update property.")
+                logging.warning("Database is empty. No page to update property.")
         else:
-            print(f"Failed to query database. Status code: {response.status_code}")
+            logging.error(f"Failed to query database. Status code: {response.status_code}")
 
     def update_latest_pages_properties(self, new_properties, num=30):
         url = f'{self._base_url}/databases/{self.access_info.get_access_id()}/query'
@@ -173,13 +175,13 @@ class NotionDatabase:
                     }
                     update_response = requests.patch(update_url, headers=headers, data=json.dumps(payload))
                     if update_response.status_code == 200:
-                        print(f"Page {page_id} property updated successfully.")
+                        logging.info(f"Page {page_id} property updated successfully.")
                     else:
-                        print(f"Failed to update page {page_id} property. Status code: {update_response.status_code}")
+                        logging.error(f"Failed to update page {page_id} property. Status code: {update_response.status_code}")
             else:
-                print("Database is empty. No page to update property.")
+                logging.warning("Database is empty. No page to update property.")
         else:
-            print(f"Failed to query database. Status code: {response.status_code}")
+            logging.error(f"Failed to query database. Status code: {response.status_code}")
 
 
 

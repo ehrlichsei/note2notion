@@ -1,6 +1,7 @@
 from .notion_access_info import PageAccessInfo
 import requests
 import json
+import logging
 
 class NotionPage:
     """
@@ -24,9 +25,9 @@ class NotionPage:
         response = requests.get(url, headers=headers)
         is_connected = response.status_code == 200
         if is_connected:
-            print("Connection to page successful.")
+            logging.info("Connection to page successful.")
         else:
-            print(f"Failed to connect to page. Status code: {response.status_code}")
+            logging.error(f"Failed to connect to page. Status code: {response.status_code}")
         return is_connected
 
     def get_page_info(self):
@@ -42,7 +43,7 @@ class NotionPage:
             page_info = response.json()
             return page_info
         else:
-            print(f"Failed to get page info. Status code: {response.status_code}")
+            logging.error(f"Failed to get page info. Status code: {response.status_code}")
             return None
         
     def get_page_name(self):
