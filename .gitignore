@@ -8,3 +8,4 @@ server/data
 __pycache__/
 /node_modules
 /views/node_modules
+.DS_Store

@@ -1,5 +1,6 @@
 import os 
 import logging
+import logger_config
 
 from my_timer import Timer
 from notion_connection.notion_database import NotionDatabase
@@ -13,11 +14,13 @@ def print_inputs(target_database, input_path):
     logging.info(f"目标数据库: {target_database}")
     logging.info(f"输入文件路径: {input_path}")
 
+
 if __name__ == '__main__':
     timer = Timer()
+    logging.debug("程序开始运行...")
 
     target_database = "DATABASE_ID_INSPIRATION"
-    input_path = "data/input.txt"
+    input_path = "data/demo.txt"
     print_inputs(target_database, input_path)
 
     access_info = DatabaseAccessInfo()
