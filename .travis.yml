@@ -3,7 +3,7 @@ services:
   - docker
 
 docker:
-  - image: python:3.9
+  - image: python:3.8
 
 install:
   - pip install --upgrade pip
