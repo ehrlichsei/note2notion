@@ -1,15 +1,13 @@
 language: python
-python:
-  - "3.9"
-before_install:
-  - sudo apt-get update
-  - sudo apt-get install -y libssl-dev  # 安装 OpenSSL 1.1.1+
+services:
+  - docker
 
-# 安装依赖
+docker:
+  - image: python:3.9
+
 install:
   - pip install --upgrade pip
   - pip install -r requirements.txt
-  
-# 执行测试
+
 script:
   - python3 -m unittest discover -s server/tests/integration -p "test_notion_api_connection.py"
