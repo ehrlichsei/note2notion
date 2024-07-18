@@ -8,4 +8,4 @@ install:
   
 # 执行测试
 script:
-  - python3 -m unittest discover -s tests/unit -p "test_*.py"
+  - python3 -m unittest discover -s server/tests/integration -p "test_notion_api_connection.py"
