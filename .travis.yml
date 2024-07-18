@@ -1,9 +1,13 @@
 language: python
 python:
   - "3.9"
-  
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install -y libssl-dev  # 安装 OpenSSL 1.1.1+
+
 # 安装依赖
 install:
+  - pip install --upgrade pip
   - pip install -r requirements.txt
   
 # 执行测试
