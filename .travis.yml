@@ -1,0 +1,11 @@
+language: python
+python:
+  - "3.12.2"
+  
+# 安装依赖
+install:
+  - pip install -r requirements.txt
+  
+# 执行测试
+script:
+  - python3 -m unittest discover -s tests/unit -p "test_*.py"
