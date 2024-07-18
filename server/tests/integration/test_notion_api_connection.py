@@ -9,6 +9,7 @@ class TestNotionAPIConnection(unittest.TestCase):
     def setUpClass(cls):
         cls.database_access_info = DatabaseAccessInfo()
         cls.database_access_info.set_access_info_from_dotenv('SECRET_KEY', 'DATABASE_ID_TEST')
+        cls.database_access_info.print_access_info()
 
         cls.page_access_info = PageAccessInfo()
         cls.page_access_info.set_access_info_from_dotenv('SECRET_KEY', 'PAGE_ID_TEST')
