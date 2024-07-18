@@ -1,7 +1,7 @@
 import unittest
-from notion_connection.notion_database import NotionDatabase
-from notion_connection.notion_access_info import DatabaseAccessInfo, PageAccessInfo
-from notion_connection.notion_page import NotionPage
+from server.notion_connection.notion_database import NotionDatabase
+from server.notion_connection.notion_access_info import DatabaseAccessInfo, PageAccessInfo
+from server.notion_connection.notion_page import NotionPage
 
 class TestNotionAPIConnection(unittest.TestCase):
 

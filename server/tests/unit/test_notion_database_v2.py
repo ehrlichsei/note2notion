@@ -1,8 +1,8 @@
 import unittest
 from unittest.mock import patch, Mock
-from notion_connection.notion_base import NotionDatabaseV2
-from notion_connection.notion_access_info import DatabaseAccessInfo
-from notion_connection.request_config import DatabaseRequestFormat
+from server.notion_connection.notion_base import NotionDatabaseV2
+from server.notion_connection.notion_access_info import DatabaseAccessInfo
+from server.notion_connection.request_config import DatabaseRequestFormat
 
 class TestNotionDatabaseV2(unittest.TestCase):
 
