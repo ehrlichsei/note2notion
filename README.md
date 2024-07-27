@@ -41,3 +41,13 @@ python -m http.server
 ## port
  the client is on port 8000
  the api is on port 5002
+
+
+
+# run locally process
+
+```
+cd server
+python3 main.py
+python3 run_translator.py
+```

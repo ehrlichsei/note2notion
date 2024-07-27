@@ -10,43 +10,44 @@ from notion_connection.txt2notion import Txt2Notion
 from notion_connection.txt_manager import TxtManager
 
 
+TARGET_DATABASE = "DATABASE_ID_TEST"
+INPUT_PATH = "data/demo.txt"
+
 def print_inputs(target_database, input_path):
-    logging.info(f"目标数据库: {target_database}")
-    logging.info(f"输入文件路径: {input_path}")
+    logging.info(f"Target database: {target_database}")
+    logging.info(f"Input path: {input_path}")
 
 
 if __name__ == '__main__':
     timer = Timer()
-    logging.debug("程序开始运行...")
+    logging.debug("Program started...")
 
-    target_database = "DATABASE_ID_INSPIRATION"
-    input_path = "data/demo.txt"
-    print_inputs(target_database, input_path)
+    print_inputs(TARGET_DATABASE, INPUT_PATH)
 
     access_info = DatabaseAccessInfo()
-    access_info.set_access_info_from_dotenv("SECRET_KEY", target_database)
+    access_info.set_access_info_from_dotenv("SECRET_KEY", TARGET_DATABASE)
 
     timer.start()
-    logging.info("第一段程序开始运行...")
-    text_manager = TxtManager(input_path)
+    logging.info("First segment starts...")
+    text_manager = TxtManager(INPUT_PATH)
     text_manager.remove_blank_lines()
     timer.stop()
-    timer.record_timing("第一段")
+    timer.record_timing("First segment")
 
-    text_loader = TxtLoader(input_path)
+    text_loader = TxtLoader(INPUT_PATH)
     text_loader.process_lines()
 
     timer.start()
-    logging.info("第二段程序开始运行...")
+    logging.info("Second segment starts...")
     notion_database = NotionDatabase(access_info)
     txt2notion = Txt2Notion(notion_database, text_loader)
     timer.stop()
-    timer.record_timing("第二段")
+    timer.record_timing("Second segment")
 
     timer.start()
-    logging.info("第三段程序开始运行...")
+    logging.info("Third segment starts...")
     txt2notion.write_to_notion(start_line=0, frequency=50)
     timer.stop()
-    timer.record_timing("第三段")
+    timer.record_timing("Third segment")
 
     timer.print_timings()
