@@ -5,6 +5,33 @@ import logging
 from .notion_access_info import DatabaseAccessInfo, PageAccessInfo
 from .notion_page import NotionPage
 
+def make_request(method, url, headers=None, payload=None, timeout=10):
+    """
+    A general function to send HTTP requests.
+
+    :param method: The HTTP method, e.g., 'GET' or 'POST'
+    :param url: The URL for the request
+    :param headers: Optional request headers
+    :param payload: Optional request payload (for POST requests)
+    :param timeout: Timeout in seconds
+    :return: JSON response from the request
+    :raises: requests.exceptions.RequestException if the request fails
+    """
+    try:
+        if method.upper() == 'POST':
+            response = requests.post(url, headers=headers, data=json.dumps(payload), timeout=timeout)
+        elif method.upper() == 'GET':
+            response = requests.get(url, headers=headers, timeout=timeout)
+        else:
+            raise ValueError(f"Unsupported HTTP method: {method}")
+
+        response.raise_for_status()  # Raise an HTTPError for bad responses
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"An error occurred: {e}")
+        raise  # Re-raise the exception for further handling
+
+
 class NotionDatabase:
 
     def __init__(self, access_info: DatabaseAccessInfo):
@@ -19,7 +46,16 @@ class NotionDatabase:
 
     def test_connection(self):
         url = f'{self._base_url}/databases/{self.access_info.get_access_id()}'
-        response = requests.get(url, headers=self.headers)
+
+        try:
+            response = requests.get(url, headers=self.headers, timeout=10)
+            response.raise_for_status()  # if the request fails, raise an exception
+            print(response.json())
+        except requests.exceptions.RequestException as e:
+            print(f"An error occurred: {e}")
+
+        response = make_request('GET', url, headers=self.headers)
+
         is_connected = response.status_code == 200
         if response.status_code == 200:
             logging.info("Connection to database successful.")
