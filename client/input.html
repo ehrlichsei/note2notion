@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>实时进度显示</title>
+    <title>realtime text processing</title>
     <style>
         #progress {
             margin-top: 20px;
@@ -13,12 +13,12 @@
     </style>
 </head>
 <body>
-    <h1>输入处理</h1>
+    <h1>input process</h1>
     <form id="inputForm">
-        <textarea id="inputText" rows="20" cols="80" placeholder="在这里输入文本..."></textarea><br>
-        <button type="button" onclick="submitForm()">提交</button>
+        <textarea id="inputText" rows="20" cols="80" placeholder="put your text..."></textarea><br>
+        <button type="button" onclick="submitForm()">submit</button>
     </form>
-    <div id="progress">进度: 0%</div>
+    <div id="progress">progress: 0%</div>
     
     <script>
         async function submitForm() {
@@ -35,10 +35,10 @@
                 });
 
                 if (!response.ok) {
-                    throw new Error('网络响应不是OK');
+                    throw new Error('response not ok');
                 }
 
-                // 创建一个读取流
+                // create a stream reader
                 const reader = response.body.getReader();
                 const decoder = new TextDecoder();
                 let progress = '';
@@ -47,17 +47,17 @@
                     const { done, value } = await reader.read();
                     if (done) break;
 
-                    // 解析流数据并更新进度
+                    // process the stream data
                     progress += decoder.decode(value, { stream: true });
-                    progressElement.textContent = `进度: ${progress.trim()}`;
+                    progressElement.textContent = `progress: ${progress.trim()}`;
                 }
 
-                // 显示最终进度
-                progressElement.textContent = `完成: ${progress.trim()}`;
+                // show the final progress
+                progressElement.textContent = `complete: ${progress.trim()}`;
                 
             } catch (error) {
-                console.error('提交表单时发生错误:', error);
-                progressElement.textContent = '发生错误';
+                console.error('error in fetch:', error);
+                progressElement.textContent = 'error';
             }
         }
     </script>

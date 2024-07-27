@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>文件上传与进度显示</title>
+    <title>file upload</title>
     <style>
         #progress {
             margin-top: 20px;
@@ -13,12 +13,12 @@
     </style>
 </head>
 <body>
-    <h1>上传文本文件并查看处理进度</h1>
+    <h1>text file upload</h1>
     <form id="uploadForm">
         <input type="file" id="fileInput" accept=".txt"><br><br>
-        <button type="button" onclick="uploadFile()">上传文件</button>
+        <button type="button" onclick="uploadFile()">upload file</button>
     </form>
-    <div id="progress">进度: 0%</div>
+    <div id="progress">progress: 0%</div>
 
     <script>
         async function uploadFile() {
@@ -26,7 +26,7 @@
             const progressElement = document.getElementById('progress');
             
             if (!fileInput.files.length) {
-                alert('请选择一个文件');
+                alert('pls select a file');
                 return;
             }
 
@@ -53,14 +53,14 @@
                     if (done) break;
 
                     progress += decoder.decode(value, { stream: true });
-                    progressElement.textContent = `进度: ${progress.trim()}`;
+                    progressElement.textContent = `progress: ${progress.trim()}`;
                 }
 
-                progressElement.textContent = `完成: ${progress.trim()}`;
+                progressElement.textContent = `complete: ${progress.trim()}`;
                 
             } catch (error) {
-                console.error('提交表单时发生错误:', error);
-                progressElement.textContent = '发生错误';
+                console.error('error uploading file:', error);
+                progressElement.textContent = 'error';
             }
         }
     </script>
