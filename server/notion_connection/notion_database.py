@@ -84,7 +84,7 @@ class NotionDatabase:
         else:
             return None
         
-    def _get_all_pages(self):
+    def get_all_pages(self):
         url = f'{self._base_url}/databases/{self.access_info.get_access_id()}/query'
 
         response = requests.post(url, headers=self.headers)

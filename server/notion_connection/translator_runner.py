@@ -11,7 +11,7 @@ class TranslatorRunner:
 
     def translate_page_titles(self, target_language='en'):
         print("loading pages...")
-        all_pages = self.notion_database._get_all_pages()
+        all_pages = self.notion_database.get_all_pages()
         for page in all_pages:
             current_title = page.page_name
             translated_title = translate_text(current_title, target=target_language)
