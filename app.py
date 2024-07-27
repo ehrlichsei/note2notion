@@ -1,7 +1,9 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, Response
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
 import os
+import time
+
 
 from server.notion_connection.txt2notion import Txt2Notion
 from server.notion_connection.notion_database import NotionDatabase
@@ -116,6 +118,51 @@ def index():
 @app.route('/api/test', methods=['GET'])
 def test():
     return jsonify({'message': 'hello world'})
+
+@app.route('/process-text', methods=['POST'])
+def process_text():
+    data = request.json
+    text = data.get('text', '')
+    
+    def generate():
+        lines = text.split('\n')
+        total_lines = len(lines)
+        
+        for i, line in enumerate(lines):
+            # 模拟处理时间
+            time.sleep(1)
+            progress = int((i + 1) / total_lines * 100)
+            yield f'处理进度: {progress}%\n'
+    
+    return Response(generate(), content_type='text/plain')
+
+@app.route('/process-file', methods=['POST'])
+def process_file():
+    if 'file' not in request.files:
+        return 'No file part', 400
+    
+    file = request.files['file']
+    
+    if file.filename == '':
+        return 'No selected file', 400
+    
+    if file and allowed_file(file.filename):
+        file_contents = file.read().decode('utf-8')
+        
+        def generate():
+            lines = file_contents.split('\n')
+            total_lines = len(lines)
+            
+            for i, line in enumerate(lines):
+                # 模拟处理时间
+                time.sleep(1)
+                progress = int((i + 1) / total_lines * 100)
+                yield f'处理进度: {progress}%\n'
+        
+        return Response(generate(), content_type='text/plain')
+    else:
+        return 'Invalid file type', 400
+
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5002))
