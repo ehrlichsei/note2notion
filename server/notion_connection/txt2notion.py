@@ -34,7 +34,7 @@ class Txt2Notion:
         lines_written = 0
         for index, line in enumerate(lines):
             if index < start_line:
-                continue  # 跳过指定行之前的行
+                continue  # skip lines before start_line
             logging.info(f"Processing line {index}: {line}")
             title = line
             property = self.txt2property(title)
@@ -42,9 +42,9 @@ class Txt2Notion:
             lines_written += 1
             if lines_written >= frequency:
                 elapsed_time = time.time() - start_time
-                time.sleep(max(1 - elapsed_time, 0))  # 等待剩余时间
-                start_time = time.time()  # 重置开始时间
-                lines_written = 0  # 重置计数器
+                time.sleep(max(1 - elapsed_time, 0))  # restart after 1 second
+                start_time = time.time()  # reset start time
+                lines_written = 0  # reset lines written
     
 
 if __name__ == '__main__':

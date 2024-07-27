@@ -58,7 +58,7 @@ class NotionPageV2(NotionBase):
                 "title": [
                     {
                         "text": {
-                            "content": title  # 替换为你的页面标题内容
+                            "content": title  # replace with your page title
                         }
                     }
                 ]

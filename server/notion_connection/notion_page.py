@@ -67,7 +67,7 @@ class NotionPage:
                 "title": [
                     {
                         "text": {
-                            "content": title  # 替换为你的页面标题内容
+                            "content": title  # replace with your page title
                         }
                     }
                 ]
@@ -90,7 +90,7 @@ if __name__ == '__main__':
             "title": [
                 {
                     "text": {
-                        "content": "lalalala"  # 替换为你的页面标题内容
+                        "content": "lalalala"  # replace with your page title
                     }
                 }
             ]

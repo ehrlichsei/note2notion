@@ -109,12 +109,12 @@ class NotionDatabase:
     def update_latest_page_property(self, new_properties):
         url = f'{self._base_url}/databases/{self.access_info.get_access_id()}/query'
 
-        # 发送查询请求获取数据库中的最近一个页面
+        # send a query request to get the latest page
         response = requests.post(url, headers=self.headers)
         if response.status_code == 200:
             data = response.json()
             if data['results']:
-                latest_page_id = data['results'][0]['id']  # 获取最近一个页面的 ID
+                latest_page_id = data['results'][0]['id']  # get the latest page ID
                 update_url = f'{self._base_url}/pages/{latest_page_id}'
                 payload = {
                     "properties": new_properties
@@ -132,7 +132,7 @@ class NotionDatabase:
     def update_latest_pages_properties(self, new_properties, num=30):
         url = f'{self._base_url}/databases/{self.access_info.get_access_id()}/query'
 
-        # 发送查询请求获取数据库中的最近 num 个页面
+        # send a query request to get the latest num pages
         response = requests.post(url, headers=self.headers)
         if response.status_code == 200:
             data = response.json()
@@ -169,7 +169,7 @@ if __name__ == '__main__':
         print("Database name:")
         print(db_name)
 
-    # 定义页面属性
+    # define page properties
     page_properties = {
         "Name": {
             "title": [
@@ -182,9 +182,9 @@ if __name__ == '__main__':
         }
     }
 
-    # 添加页面
+    # add page
     notion_db.add_page(page_properties)
 
-    # 获取所有页面 打印页面名称
+    # add pages
     for page in notion_db.pages:
         print(page.page_name)
