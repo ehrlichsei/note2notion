@@ -14,15 +14,15 @@ class NotionPage:
         self.access_info = access_info
         self._base_url = 'https://api.notion.com/v1'
         self.page_name = self.get_page_name()
-
-    def test_connection(self):
-        url = f'{self._base_url}/pages/{self.access_info.get_access_id()}'
-        headers = {
+        self.headers = {
             'Authorization': f'Bearer {self.access_info.get_key()}',
             'Content-Type': 'application/json',
             'Notion-Version': '2022-06-28',
         }
-        response = requests.get(url, headers=headers)
+
+    def test_connection(self):
+        url = f'{self._base_url}/pages/{self.access_info.get_access_id()}'
+        response = requests.get(url, headers=self.headers)
         is_connected = response.status_code == 200
         if is_connected:
             logging.info("Connection to page successful.")
@@ -32,13 +32,7 @@ class NotionPage:
 
     def get_page_info(self):
         url = f'{self._base_url}/pages/{self.access_info.get_access_id()}'
-        headers = {
-            'Authorization': f'Bearer {self.access_info.get_key()}',
-            'Content-Type': 'application/json',
-            'Notion-Version': '2022-06-28',  # 替换为正确的 Notion API 版本
-        
-        }
-        response = requests.get(url, headers=headers)
+        response = requests.get(url, headers=self.headers)
         if response.status_code == 200:
             page_info = response.json()
             return page_info
@@ -59,15 +53,10 @@ class NotionPage:
         
     def update_page_property(self, properties):
         url = f'{self._base_url}/pages/{self.access_info.get_access_id()}'
-        headers = {
-            'Authorization': f'Bearer {self.access_info.get_key()}',
-            'Content-Type': 'application/json',
-            'Notion-Version': '2022-06-28',
-        }
         payload = {
             "properties": properties
         }
-        response = requests.patch(url, headers=headers, data=json.dumps(payload))
+        response = requests.patch(url, headers=self.headers, data=json.dumps(payload))
         is_updated = response.status_code == 200
         return is_updated
 

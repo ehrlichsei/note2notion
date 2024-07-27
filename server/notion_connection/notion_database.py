@@ -10,16 +10,16 @@ class NotionDatabase:
     def __init__(self, access_info: DatabaseAccessInfo):
         self.access_info = access_info
         self._base_url = 'https://api.notion.com/v1'
-        # self.pages = self._get_all_pages()
-
-    def test_connection(self):
-        url = f'{self._base_url}/databases/{self.access_info.get_access_id()}'
-        headers = {
+        self.headers = {
             'Authorization': f'Bearer {self.access_info.get_key()}',
             'Content-Type': 'application/json',
             'Notion-Version': '2022-06-28',
         }
-        response = requests.get(url, headers=headers)
+        # self.pages = self._get_all_pages()
+
+    def test_connection(self):
+        url = f'{self._base_url}/databases/{self.access_info.get_access_id()}'
+        response = requests.get(url, headers=self.headers)
         is_connected = response.status_code == 200
         if response.status_code == 200:
             logging.info("Connection to database successful.")
@@ -31,12 +31,7 @@ class NotionDatabase:
 
     def get_database_info(self):
         url = f'{self._base_url}/databases/{self.access_info.get_access_id()}'
-        headers = {
-            'Authorization': f'Bearer {self.access_info.get_key()}',
-            'Content-Type': 'application/json',
-            'Notion-Version': '2022-06-28',
-        }
-        response = requests.get(url, headers=headers)
+        response = requests.get(url, headers=self.headers)
         if response.status_code == 200:
             database_info = response.json()
             return database_info
@@ -55,13 +50,8 @@ class NotionDatabase:
         
     def _get_all_pages(self):
         url = f'{self._base_url}/databases/{self.access_info.get_access_id()}/query'
-        headers = {
-            'Authorization': f'Bearer {self.access_info.get_key()}',
-            'Content-Type': 'application/json',
-            'Notion-Version': '2022-06-28',
-        }
 
-        response = requests.post(url, headers=headers)
+        response = requests.post(url, headers=self.headers)
         if response.status_code == 200:
             data = response.json()
             if data['results']:
@@ -83,13 +73,8 @@ class NotionDatabase:
     
     def get_all_page_ids(self):
         url = f'{self._base_url}/databases/{self.access_info.get_access_id()}/query'
-        headers = {
-            'Authorization': f'Bearer {self.access_info.get_key()}',
-            'Content-Type': 'application/json',
-            'Notion-Version': '2022-06-28',
-        }
 
-        response = requests.post(url, headers=headers)
+        response = requests.post(url, headers=self.headers)
         if response.status_code == 200:
             data = response.json()
             if data['results']:
@@ -108,18 +93,13 @@ class NotionDatabase:
 
     def add_page(self, properties):
         url = f'{self._base_url}/pages'
-        headers = {
-            'Authorization': f'Bearer {self.access_info.get_key()}',
-            'Content-Type': 'application/json',
-            'Notion-Version': '2022-06-28',
-        }
         payload = {
             "parent": {
                 "database_id": self.access_info.get_access_id()
             },
             "properties": properties
         }
-        response = requests.post(url, headers=headers, data=json.dumps(payload))
+        response = requests.post(url, headers=self.headers, data=json.dumps(payload))
         if response.status_code == 200:
             logging.info("Page added successfully.")
         else:
@@ -128,14 +108,9 @@ class NotionDatabase:
 
     def update_latest_page_property(self, new_properties):
         url = f'{self._base_url}/databases/{self.access_info.get_access_id()}/query'
-        headers = {
-            'Authorization': f'Bearer {self.access_info.get_key()}',
-            'Content-Type': 'application/json',
-            'Notion-Version': '2022-06-28',
-        }
 
         # 发送查询请求获取数据库中的最近一个页面
-        response = requests.post(url, headers=headers)
+        response = requests.post(url, headers=self.headers)
         if response.status_code == 200:
             data = response.json()
             if data['results']:
@@ -156,14 +131,9 @@ class NotionDatabase:
 
     def update_latest_pages_properties(self, new_properties, num=30):
         url = f'{self._base_url}/databases/{self.access_info.get_access_id()}/query'
-        headers = {
-            'Authorization': f'Bearer {self.access_info.get_key()}',
-            'Content-Type': 'application/json',
-            'Notion-Version': '2022-06-28',
-        }
 
         # 发送查询请求获取数据库中的最近 num 个页面
-        response = requests.post(url, headers=headers)
+        response = requests.post(url, headers=self.headers)
         if response.status_code == 200:
             data = response.json()
             if data['results']:
