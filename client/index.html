@@ -24,7 +24,7 @@
 
     <script>
         function getData() {
-            fetch('http://127.0.0.1:5000/api/test', {
+            fetch('http://127.0.0.1:5002/api/test', {
                 method: 'GET',
                 mode: 'cors',  // 允许跨域请求
                 headers: {
@@ -47,7 +47,7 @@
 
             console.log(name, email);
 
-            fetch('http://127.0.0.1:5000/api/submit_json', {
+            fetch('http://127.0.0.1:5002/api/submit_json', {
                 method: 'POST',
                 mode: 'cors',
                 headers: {

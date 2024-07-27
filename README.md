@@ -26,3 +26,18 @@ or run only API connection test
 ```
 python3 -m unittest discover -s server/tests/integration -p "test_notion_api_connection.py"
 ```
+
+### run flask server
+```
+python3 app.py
+```
+
+### run client web GUI
+```
+cd client
+python -m http.server
+```
+
+## port
+ the client is on port 8000
+ the api is on port 5002
