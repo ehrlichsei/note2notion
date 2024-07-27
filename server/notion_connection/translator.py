@@ -1,5 +1,5 @@
-from notion_access_info import PageAccessInfo
-from notion_page import NotionPage
+from .notion_access_info import PageAccessInfo
+from .notion_page import NotionPage
 
 import os
 from google.cloud import translate_v2 as translate
