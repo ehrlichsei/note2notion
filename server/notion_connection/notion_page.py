@@ -13,13 +13,13 @@ class NotionPage:
     def __init__(self, access_info: PageAccessInfo):
         self.access_info = access_info
         self._base_url = 'https://api.notion.com/v1'
-        self.page_name = self.get_page_name()
         self.headers = {
             'Authorization': f'Bearer {self.access_info.get_key()}',
             'Content-Type': 'application/json',
             'Notion-Version': '2022-06-28',
         }
-
+        self.page_name = self.get_page_name()
+        
     def test_connection(self):
         url = f'{self._base_url}/pages/{self.access_info.get_access_id()}'
         response = requests.get(url, headers=self.headers)

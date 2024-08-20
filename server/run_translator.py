@@ -2,10 +2,11 @@ from notion_connection.translator_runner import TranslatorRunner
 from notion_connection.notion_database import NotionDatabase
 from notion_connection.notion_access_info import DatabaseAccessInfo
 
-TARGET_LANGUAGE = 'de'
+TARGET_LANGUAGE = 'en'
 
 
 if __name__ == '__main__':
+    print("running translator...")
     access_info = DatabaseAccessInfo()
     access_info.set_access_info_from_dotenv("SECRET_KEY", "DATABASE_ID_TEST")
 

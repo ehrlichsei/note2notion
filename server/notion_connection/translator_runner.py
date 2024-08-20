@@ -2,7 +2,7 @@ from .notion_access_info import DatabaseAccessInfo
 from .notion_database import NotionDatabase
 from .translator import translate_text
 
-TARGET_LANGUAGE = 'ru'
+TARGET_LANGUAGE = 'en'
 
 class TranslatorRunner:
 
@@ -10,7 +10,7 @@ class TranslatorRunner:
         self.notion_database = notion_database
 
     def translate_page_titles(self, target_language='en'):
-        print("loading pages...")
+        print("loading pages...taking some time")
         all_pages = self.notion_database.get_all_pages()
         for page in all_pages:
             current_title = page.page_name
