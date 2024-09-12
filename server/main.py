@@ -8,6 +8,10 @@ from notion_connection.notion_access_info import DatabaseAccessInfo
 from notion_connection.txt_loader import TxtLoader
 from notion_connection.txt2notion import Txt2Notion
 from notion_connection.txt_manager import TxtManager
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Constants for file paths and database IDs
 DATABASES = {
@@ -49,8 +53,8 @@ def print_inputs(target_database, input_path):
 if __name__ == '__main__':
 
     # Select target database and input path
-    TARGET_DATABASE_KEY = "TEST"
-    INPUT_FILE_KEY = "demo"
+    TARGET_DATABASE_KEY = os.getenv('TARGET_DATABASE_KEY')
+    INPUT_FILE_KEY = os.getenv('INPUT_FILE_KEY')
 
     # Get database ID and input path
     TARGET_DATABASE = DATABASES.get(TARGET_DATABASE_KEY)
