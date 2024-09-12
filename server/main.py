@@ -18,7 +18,8 @@ DATABASES = {
     "TEST": "DATABASE_ID_TEST",
     "INSPIRATION_EN": "DATABASE_ID_INSPIRATION_EN",
     "INSPIRATION_DE": "DATABASE_ID_INSPIRATION_DE",
-    "ENVIRONMENT_EN": "DATABASE_ID_ENVIRONMENT_EN"
+    "ENVIRONMENT_EN": "DATABASE_ID_ENVIRONMENT_EN",
+    "TASK_IDEAS_EN": "DATABASE_ID_TASK_IDEAS_EN",
 }
 
 # Input paths
@@ -26,7 +27,8 @@ INPUT_PATHS = {
     "demo": "data/demo.txt",
     "inspiration_en": "data/inspiration_en.txt",
     "inspiration_de": "data/inspiration_de.txt",
-    "environment_en": "data/environment_en.txt"
+    "environment_en": "data/environment_en.txt",
+    "task_ideas_en": "data/task_ideas_en.txt",
 }
 
 def load_data_to_database(target_db, input_path):
