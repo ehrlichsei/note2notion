@@ -9,9 +9,37 @@ from notion_connection.txt_loader import TxtLoader
 from notion_connection.txt2notion import Txt2Notion
 from notion_connection.txt_manager import TxtManager
 
+# Constants for file paths and database IDs
+DATABASES = {
+    "TEST": "DATABASE_ID_TEST",
+    "INSPIRATION_EN": "DATABASE_ID_INSPIRATION_EN",
+    "INSPIRATION_DE": "DATABASE_ID_INSPIRATION_DE",
+    "ENVIRONMENT_EN": "DATABASE_ID_ENVIRONMENT_EN"
+}
 
-TARGET_DATABASE = "DATABASE_ID_TEST"
-INPUT_PATH = "data/demo.txt"
+# Input paths
+INPUT_PATHS = {
+    "demo": "data/demo.txt",
+    "inspiration_en": "data/inspiration_en.txt",
+    "inspiration_de": "data/inspiration_de.txt",
+    "environment_en": "data/environment_en.txt"
+}
+
+def load_data_to_database(target_db, input_path):
+    # Check if input path exists
+    if not os.path.exists(input_path):
+        print(f"Error: File '{input_path}' not found.")
+        return
+
+    # Simulate file reading
+    try:
+        with open(input_path, 'r') as file:
+            data = file.read()
+            # Here you can add logic to load the data into the target database
+            print(f"Data from {input_path} successfully loaded into {target_db}")
+    except Exception as e:
+        print(f"Error reading the file: {e}")
+
 
 def print_inputs(target_database, input_path):
     logging.info(f"Target database: {target_database}")
@@ -19,6 +47,15 @@ def print_inputs(target_database, input_path):
 
 
 if __name__ == '__main__':
+
+    # Select target database and input path
+    TARGET_DATABASE_KEY = "TEST"
+    INPUT_FILE_KEY = "demo"
+
+    # Get database ID and input path
+    TARGET_DATABASE = DATABASES.get(TARGET_DATABASE_KEY)
+    INPUT_PATH = INPUT_PATHS.get(INPUT_FILE_KEY)
+
     timer = Timer()
     logging.debug("Program started...")
 
